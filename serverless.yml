@@ -9,6 +9,12 @@ provider:
   region: ap-northeast-1
   profile: severless
   runtime: nodejs20.x
+  environment:
+    MAILUSER: ${param:user}
+    MAILPASSWORD: ${param:password}
+    TOMAIL: ${param:tomail}
+
+# serverless deploy --param="user=xxx" --param="password=xxx" --param="tomail=xxx"
 
 functions:
   hello:
