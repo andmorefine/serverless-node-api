@@ -1,0 +1,16 @@
+{
+  "name": "node-http-api",
+  "description": "",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8",
+    "@types/node": "^22.5.2",
+    "prettier": "^3",
+    "serverless": "^4",
+    "typescript": "^5"
+  }
+}

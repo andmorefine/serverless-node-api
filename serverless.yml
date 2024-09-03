@@ -1,0 +1,25 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: andmorefine
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: node-http-api
+
+provider:
+  name: aws
+  stage: beta
+  region: ap-northeast-1
+  profile: severless
+  runtime: nodejs20.x
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+  sendemail:
+    handler: handler.sendemail
+    events:
+      - httpApi:
+          path: /sendemail
+          method: post
