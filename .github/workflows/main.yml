@@ -2,8 +2,14 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 
 on:
-  push:
+  push:            # プッシュ時に「check-bats-version」だけ走る
   workflow_dispatch:
+    inputs:
+      run_tests:
+        description: 'Run the tests job after the version check'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   check-bats-version:
@@ -31,6 +37,9 @@ jobs:
   run-tests:
     needs: check-bats-version
     runs-on: ubuntu-latest
+    # プッシュでは実行せず、手動トリガー＋入力で run_tests=true のときだけ動く
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_tests == 'true' }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -40,15 +49,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Run Bats tests
+      - name: Install Bats & Run Bats tests
         run: |
           sudo apt-get update
           sudo apt-get install -y bats
           bats --version
           bats tests/
 
-      - name: Run npm tests
-        run: npm test
+      - name: Install npm dependencies & Run npm tests
+        run: |
+          npm install
+          npm test
