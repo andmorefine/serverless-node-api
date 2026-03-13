@@ -1,0 +1,29 @@
+name: Run Tests
+
+# 完全に手動実行のみ
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install bats & run bats tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+          bats --version
+          bats tests/
+
+      - name: install npm deps & run npm tests
+        run: |
+          npm install
+          npm test

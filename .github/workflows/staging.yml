@@ -1,0 +1,27 @@
+name: Check Bats Version
+
+on:
+  push:
+
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: bats --version
+        run: bats --version
+
+      - name: install npm deps
+        run: npm install
