@@ -2,8 +2,8 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 
 on:
-  push:            # プッシュ時に「check-bats-version」だけ走る
-  workflow_dispatch:
+  push:                    # プッシュ時は check-bats-version だけ走る
+  workflow_dispatch:       # 手動実行用トリガー
     inputs:
       run_tests:
         description: 'Run the tests job after the version check'
@@ -37,9 +37,14 @@ jobs:
   run-tests:
     needs: check-bats-version
     runs-on: ubuntu-latest
-    # プッシュでは実行せず、手動トリガー＋入力で run_tests=true のときだけ動く
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_tests == 'true' }}
-
+    # 条件: workflow_dispatch＋run_tests=true のとき、または再実行（run_attempt>1）のときだけジョブを起動
+    if: ${{ 
+      (
+        github.event_name == 'workflow_dispatch' && 
+        github.event.inputs.run_tests == 'true'
+      ) || 
+      (github.run_attempt > 1)
+    }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
