@@ -9,9 +9,11 @@ jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -20,7 +22,33 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bats
 
-      - name: Check Bats Version
+      - name: Check Bats version
         run: bats --version
 
-      - run: npm install
+      - name: Install npm dependencies
+        run: npm install
+
+  run-tests:
+    needs: check-bats-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run Bats tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+          bats --version
+          bats tests/
+
+      - name: Run npm tests
+        run: npm test
