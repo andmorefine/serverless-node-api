@@ -1,4 +1,4 @@
-name: Run Tests
+name: Deploy Telemedicine GAS for PRD
 
 # 完全に手動実行のみ
 on:

@@ -1,4 +1,4 @@
-name: Check Bats Version
+name: Deploy Telemedicine GAS for STG
 
 on:
   push:
@@ -25,3 +25,4 @@ jobs:
 
       - name: install npm deps
         run: npm install
+
