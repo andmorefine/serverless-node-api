@@ -1,13 +1,26 @@
 name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install Bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Check Bats Version
+        run: bats --version
+
       - run: npm install
